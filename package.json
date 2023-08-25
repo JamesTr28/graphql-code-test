@@ -1,0 +1,23 @@
+{
+  "name": "graphql-code-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/datasource-rest": "^6.0.1",
+    "@apollo/server": "^4.2.1",
+    "@as-integrations/aws-lambda": "^1.0.1",
+    "dataloader": "^2.2.2",
+    "graphql": "^16.6.0",
+    "serverless": "^3.25.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
