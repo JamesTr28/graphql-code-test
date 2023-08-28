@@ -7,6 +7,9 @@
     "provider": {
       "name": "aws",
       "runtime": "nodejs16.x",
+      "httpApi": {
+        "cors": true
+      },
       "stage": "dev",
       "region": "us-east-1",
       "versionFunctions": true,
@@ -174,7 +177,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/apollo-lambda/dev/1693152470521-2023-08-27T16:07:50.521Z/apollo-lambda.zip"
+                "S3Key": "serverless/apollo-lambda/dev/1693233449743-2023-08-28T14:37:29.743Z/apollo-lambda.zip"
               },
               "Handler": "server.graphqlHandler",
               "Runtime": "nodejs16.x",
@@ -192,21 +195,40 @@
               "GraphqlLogGroup"
             ]
           },
-          "GraphqlLambdaVersionoQmoSqGyl2gCeXMEoLo9hrTIYykza4uJAIN66zP5aM": {
+          "GraphqlLambdaVersion8veO1ywqzR5JxnDBXQ9uBclusatvUyOM3LrePt5fc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GraphqlLambdaFunction"
               },
-              "CodeSha256": "w0JuWTmxCapl3IpzOoU5Nm2EvNhKkQVqa1JHNcxbwj4="
+              "CodeSha256": "lL946buoEul8oHQYCz2190yrxa2NjlvALlnnqPfdUOI="
             }
           },
           "HttpApi": {
             "Type": "AWS::ApiGatewayV2::Api",
             "Properties": {
               "Name": "dev-apollo-lambda",
-              "ProtocolType": "HTTP"
+              "ProtocolType": "HTTP",
+              "CorsConfiguration": {
+                "AllowHeaders": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "AllowMethods": [
+                  "OPTIONS",
+                  "POST",
+                  "GET"
+                ],
+                "AllowOrigins": [
+                  "*"
+                ]
+              }
             }
           },
           "HttpApiStage": {
@@ -328,7 +350,7 @@
           "GraphqlLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GraphqlLambdaVersionoQmoSqGyl2gCeXMEoLo9hrTIYykza4uJAIN66zP5aM"
+              "Ref": "GraphqlLambdaVersion8veO1ywqzR5JxnDBXQ9uBclusatvUyOM3LrePt5fc"
             },
             "Export": {
               "Name": "sls-apollo-lambda-dev-GraphqlLambdaFunctionQualifiedArn"
@@ -454,6 +476,9 @@
       },
       "vpc": {}
     },
+    "plugins": [
+      "serverless-offline"
+    ],
     "pluginsData": {},
     "functions": {
       "graphql": {
@@ -482,7 +507,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "GraphqlLambdaVersionoQmoSqGyl2gCeXMEoLo9hrTIYykza4uJAIN66zP5aM"
+        "versionLogicalId": "GraphqlLambdaVersion8veO1ywqzR5JxnDBXQ9uBclusatvUyOM3LrePt5fc"
       }
     },
     "configValidationMode": "warn",
@@ -494,6 +519,9 @@
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
       }
     },
     "layers": {},
@@ -501,7 +529,7 @@
     "artifact": "C:\\Users\\User\\graphql-code-test-v2\\.serverless\\apollo-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/apollo-lambda/dev/1693152470521-2023-08-27T16:07:50.521Z",
+    "artifactDirectoryName": "serverless/apollo-lambda/dev/1693233449743-2023-08-28T14:37:29.743Z",
     "artifact": "apollo-lambda.zip"
   }
 }

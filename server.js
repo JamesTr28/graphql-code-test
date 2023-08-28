@@ -1,5 +1,4 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { TypicodeAPI } from './datasources/TypicodeAPI.js';
 import { startServerAndCreateLambdaHandler, handlers, } from '@as-integrations/aws-lambda';
 
@@ -60,18 +59,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers
 });
-// const { url } = await startStandaloneServer(server, {
-//   listen: { port: 8080 },
-//   context: async () => {
-//     return {
-//       dataSources: {
-//         typicodeAPI: new TypicodeAPI()
-//       }
-//     }
-//   }
-// });
-
-//export const graphqlHandler = server.createHandler();
 
 export const graphqlHandler = startServerAndCreateLambdaHandler(
   server,
