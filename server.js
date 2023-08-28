@@ -45,9 +45,7 @@ const resolvers = {
       return await dataSources.typicodeAPI.getUsers.load(userId);
     },
     comments: async({ id }, _, { dataSources }) => {
-      let response = await dataSources.typicodeAPI.getCommentsForPosts.load(id);
-
-      return response.data;
+      return await dataSources.typicodeAPI.getCommentsForPosts.load(id);
     },
   },
   Mutation: {
