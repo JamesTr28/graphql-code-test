@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { TypicodeAPI } from './datasources/TypicodeAPI.js';
+import { startServerAndCreateLambdaHandler, handlers, } from '@as-integrations/aws-lambda';
 
 const typeDefs = `#graphql
   type Query {
@@ -45,9 +46,7 @@ const resolvers = {
       return await dataSources.typicodeAPI.getUsers.load(userId);
     },
     comments: async({ id }, _, { dataSources }) => {
-      let response = await dataSources.typicodeAPI.getCommentsForPosts.load(id);
-
-      return response.data;
+      return await dataSources.typicodeAPI.getCommentsForPosts.load(id);
     },
   },
   Mutation: {
@@ -61,16 +60,30 @@ const server = new ApolloServer({
   typeDefs,
   resolvers
 });
+// const { url } = await startStandaloneServer(server, {
+//   listen: { port: 8080 },
+//   context: async () => {
+//     return {
+//       dataSources: {
+//         typicodeAPI: new TypicodeAPI()
+//       }
+//     }
+//   }
+// });
 
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 8080 },
-  context: async () => {
-    return {
-      dataSources: {
-        typicodeAPI: new TypicodeAPI()
+//export const graphqlHandler = server.createHandler();
+
+export const graphqlHandler = startServerAndCreateLambdaHandler(
+  server,
+  // We will be using the Proxy V2 handler
+  handlers.createAPIGatewayProxyEventV2RequestHandler(),
+  {
+    context: async () => {
+      return {
+        dataSources: {
+          typicodeAPI: new TypicodeAPI()
+        }
       }
     }
   }
-});
-
-console.log(`🚀  Server ready at: ${url}`);
+);
